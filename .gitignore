@@ -5,5 +5,5 @@
 /.vs
 /src/bin
 /src/obj
-/src/packages
+**/packages
 *.user

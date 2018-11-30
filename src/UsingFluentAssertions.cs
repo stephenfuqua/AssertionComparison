@@ -1,9 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Should;
-using Shouldly;
 using System;
-using System.Collections.Generic;
 
 namespace AssertionComparison
 {
