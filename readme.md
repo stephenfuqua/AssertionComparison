@@ -208,13 +208,15 @@ small to read too much into it, but this is an important finding and something
 to watch out for. Based on documentation and richness of syntax I would want to
 use Fluent Assertions, but if the project has a large number of tests, the small
 performance difference could add up to a meaningful increase in total execution
-time. If time to fully evaluate is lacking, then I feel that my best choice is
-to upgrade Should to Shoudly and perhaps make time to pitch in on improving the
-documentation.
+time. If time to fully evaluate is lacking, then I feel that my best choices are
+to either (a) focus on Assert.That syntax or (b) upgrade Should to Shoudly and
+perhaps make time to pitch in on improving the documentation. Leaving existing
+Should tests in place would seem to be harmless since the performance is good.
 
 | Framework | Documentation | Richness | Performance |
 |----------|-------------|---------|--------------------|
-| NUnit3 | ++ | + | / |
+| NUnit3 (Classic) | ++ | + | / |
+| NUnit3 (Constraint) | ++ | ++ | ++ | 
 | FluentAssertions | +++ | +++ | - |
 | Should | + | + | ++ |
 | Shouldly | + | ++ | ++ |
