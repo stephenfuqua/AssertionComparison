@@ -175,7 +175,8 @@ Yikes! What's going on here? Let's drill into the results a bit...
 
 ![Detailed execution times](images/execution-times-fa-detail.png)
 
-There is one test that makes up 73% of execution time. And it is a trivial test:
+There is one test that makes up nearly 80% of execution time. And it is a
+trivial test:
 
 ```csharp
 [Test]
