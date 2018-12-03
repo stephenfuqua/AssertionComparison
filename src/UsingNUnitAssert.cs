@@ -20,7 +20,7 @@ namespace AssertionComparison
         {
             var sum = AggregateCalculator.Sum(1, -1);
 
-            Assert.AreEqual(sum, -1); // purposefully wrong
+            Assert.AreEqual(-1, sum); // purposefully wrong
         }
 
         [Test]

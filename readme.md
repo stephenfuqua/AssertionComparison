@@ -18,7 +18,7 @@ Questions in front of me:
 3. If selecting Shouldly or FluentAssertions, ought we to upgrade the old
    asserts?
 
-## Why Use a Separate Library?
+## Why Use a Separate Library
 
 Some argue that the assertion library simply ought to be independent of the unit
 test framework, allowing greater flexibility in switching between frameworks.
@@ -27,18 +27,24 @@ so that alone is an insufficient reason.
 
 One problem I've run into frequently in legacy code is people switching up the
 expected and actual responses. In classic NUnit, `expected` comes first. This
-situation is a better with the NUnit3 `Assert.That` style; however, the values
-are still hidden away inside of the assertion method call.
+situation is better with the NUnit3 `Assert.That` style; however, the values are
+still hidden away inside of the assertion method call.
 
 ```csharp
 Assert.AreEqual(expected, actual); // old style
 Assert.That(actual, Is.EqualTo(expected)); // new style
 ```
 
-When a coder reverses the traditional style, and you need to fix a broken test, it can get a bit
-confusing to figure out what is going on (especially if the variables are not so
-clearly named). The three fluent frameworks evaluated here address this by
-putting the actual result front and center:
+When a coder reverses the traditional style, and you need to fix a broken test,
+it can get a bit confusing to figure out what is going on (especially if the
+variables are not so clearly named). In the course of writing this project,
+while switching back and forth between styles, I realized I had made this
+mistake myself - wanting to put the actual result first and then compare it to
+the expected.
+
+If continuing to use NUnit3, this alone is a good reason to switch to the new
+Constrain Model. The three fluent frameworks evaluated here address this by
+putting the actual result at the beginning of the assertion statement:
 
 ```csharp
 actual.Should().Be(expected); // FluentAssertions, and Should in Fluent mode
@@ -53,7 +59,7 @@ mistakes per function). Each of these frameworks reports failures differently.
 Compare these results:
 
 * NUnit Assert: `Assert.AreEqual(-1, sum); Assert.That(sum, Is.EqualTo(-1));`
-  > Expected: 0 But was:  -1
+  > Expected: -1 But was: 0
 * FluentAssertions: `sum.Should().Be(-1);`
   > Expected sum to be -1L, but found 0L.
 * Should: `sum.ShouldEqual(-1);`
