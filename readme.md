@@ -88,20 +88,20 @@ smaller package. Looking at the repo, it also clear that the project hasn't been
 touched in many years. This could mean that it simply works - but it also means
 that others have passed it by in the meantime.
 
-### Exception Handling
+## Exception Handling
 
 To get a sense of the syntax richness, let's look at exception handling. Aside:
 In NUnit, I never use the `[ExpectedException]` attribute as I prefer to have
 the assert clearly visible in the method body.
 
-#### NUnit Outer Exception
+### NUnit Outer Exception
 
 ```csharp
 Assert.Throws<ArgumentNullException>(RunNullSeries); // old style
 Assert.That(RunNullSeries, Throws.ArgumentNullException); // new style
 ```
 
-#### Fluent Assertions Outer Exception
+### Fluent Assertions Outer Exception
 
 ```csharp
 ((Action)RunNullSeries)
@@ -109,14 +109,14 @@ Assert.That(RunNullSeries, Throws.ArgumentNullException); // new style
     .Throw<ArgumentNullException>();
 ```
 
-#### Should Outer Exception
+### Should Outer Exception
 
 ```csharp
 ((Action)RunNullSeries)
     .ShouldThrow<ArgumentNullException>();
 ```
 
-#### Shouldly Outer Exception
+### Shouldly Outer Exception
 
 ```csharp
 ((Action)RunNullSeries)
@@ -130,13 +130,13 @@ this is that it presents a more consistent looking interface, compared to
 combining elements together (e.g. `ShouldThrow`, `ShouldBe`, etc.) This might
 just be a matter of style.
 
-### Inner Exception Handling
+## Inner Exception Handling
 
 Both Fluent Assertions and Shoudly make it easy to also check on an inner
 exception. So does the new NUnit3 Constraint Model. With the other two
 frameworks, you're left with catching and inspecting the exception.
 
-#### NUnit3 Constraint Model Inner Exception
+### NUnit3 Constraint Model Inner Exception
 
 ```csharp
 Assert.That(RunSeriesWithNullValue, 
@@ -153,7 +153,7 @@ Assert.That(RunSeriesWithNullValue,
     .WithInnerException<InvalidOperationException>();
 ```
 
-#### Shouldly Inner Exception
+### Shouldly Inner Exception
 
 ```csharp
 ((Action)RunSeriesWithNullValue)
