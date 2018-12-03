@@ -8,7 +8,7 @@ namespace AssertionComparison
     [TestFixture]
     public class UsingFluentAssertions : WhenCalculatingSummation
     {
-        [TestCaseSource(nameof(TestCases))]
+        [TestCaseSource(nameof(TestCases)), Order(1)]
         public void Test(int?[] addends, long expected)
         {
             AggregateCalculator.Sum(addends)

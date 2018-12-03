@@ -12,7 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{431BCDF7-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{C7EEE11D-C2A6-4556-BE7D-1548EFDA193E}"
 	ProjectSection(SolutionItems) = preProject
-		images\execution-times-1.png = images\execution-times-1.png
+		images\execution-times-fa-detail.png = images\execution-times-fa-detail.png
+		images\execution-times-summary.png = images\execution-times-summary.png
 	EndProjectSection
 EndProject
 Global

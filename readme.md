@@ -3,16 +3,16 @@
 ## Motivation
 
 Working with a legacy codebase using NUnit and .NET Framework, I've found that
-there is a mix of regular assertions and assertions using the
+there is a mix of NUnit assertions and assertions using the
 [Should](https://github.com/erichexter/Should/) library. This library is rather
 old and, frankly, limited compared to
 [Shouldly](https://shouldly.readthedocs.io/en/latest/) and
 [FluentAssertions](https://fluentassertions.com). These newer two frameworks are
-significantly more expressive, with APIs that cover myriad situations eleganty.
+significantly more expressive, with APIs that cover myriad situations elegantly.
 Questions in front of me:
 
 1. Are any of these libraries really worthwhile compared to simply using NUnit's
-   built-in assertions?
+   built-in assertions - either traditional or Assert.That style?
 2. If using any independent framework, which is the best choice for this code
    base?
 3. If selecting Shouldly or FluentAssertions, ought we to upgrade the old
@@ -26,13 +26,16 @@ Switching unit test frameworks in a large legacy project sounds rather tedious,
 so that alone is an insufficient reason.
 
 One problem I've run into frequently in legacy code is people switching up the
-expected and actual responses. In NUnit, `expected` comes first:
+expected and actual responses. In classic NUnit, `expected` comes first. This
+situation is a better with the NUnit3 `Assert.That` style; however, the values
+are still hidden away inside of the assertion method call.
 
 ```csharp
-Assert.AreEqual(expected, actual, message);
+Assert.AreEqual(expected, actual); // old style
+Assert.That(actual, Is.EqualTo(expected)); // new style
 ```
 
-When a coder reverses this, and you need to fix a broken test, it can get a bit
+When a coder reverses the traditional style, and you need to fix a broken test, it can get a bit
 confusing to figure out what is going on (especially if the variables are not so
 clearly named). The three fluent frameworks evaluated here address this by
 putting the actual result front and center:
@@ -49,7 +52,7 @@ at that, and I frown right back unless the coders are prone to large numbers of
 mistakes per function). Each of these frameworks reports failures differently.
 Compare these results:
 
-* NUnit Assert: `Assert.AreEqual(-1, sum);`
+* NUnit Assert: `Assert.AreEqual(-1, sum); Assert.That(sum, Is.EqualTo(-1));`
   > Expected: 0 But was:  -1
 * FluentAssertions: `sum.Should().Be(-1);`
   > Expected sum to be -1L, but found 0L.
@@ -88,7 +91,8 @@ the assert clearly visible in the method body.
 #### NUnit Outer Exception
 
 ```csharp
-Assert.Throws<ArgumentNullException>(RunNullSeries);
+Assert.Throws<ArgumentNullException>(RunNullSeries); // old style
+Assert.That(RunNullSeries, Throws.ArgumentNullException); // new style
 ```
 
 #### Fluent Assertions Outer Exception
@@ -123,8 +127,16 @@ just be a matter of style.
 ### Inner Exception Handling
 
 Both Fluent Assertions and Shoudly make it easy to also check on an inner
-exception. With the other two frameworks, you're left with catching and
-inspecting the exception.
+exception. So does the new NUnit3 Constraint Model. With the other two
+frameworks, you're left with catching and inspecting the exception.
+
+#### NUnit3 Constraint Model Inner Exception
+
+```csharp
+Assert.That(RunSeriesWithNullValue, 
+        Throws.TypeOf<CalculatorException>()
+            .With.InnerException.TypeOf<InvalidOperationException>());
+```csharp
 
 #### Fluent Assertions Inner Exception
 
@@ -171,23 +183,27 @@ public void TempVariable()
 ```
 
 Running that one test repeatedly, by itself, I see similar results. When I run
-multiple tests, that one test always seems to take the longest. When I removing
-the temporary variable, `AggregateCalculator.Sum(1, -1).Should().Be(-1);`,the
-execution time improved a little, but that might have been a fluke of CPU usage.
-In these limited tests, Should and Shouldy consistently out-perform
-FluentAssertions and NUnit. This is unexpected. Looking at the other tests, this
-is a fairly consistent problem. There was only one area where FluentAssertions
-seems to be faster - in my parameterized test. These parameterized tests uses the
-same syntax, so why should they be so much faster? I wonder if there is some
-reflection going on, which is cached after an execution.
+multiple tests, that one test always seems to take the longest. Applying the
+\[Order] attribute to the another test, to force another one to run first, the
+longest time shifts to that test. Thus it seems to be a bootstrapping thing
+(reflection?) with FluentAssertions - the first test seems to take much longer
+to execute. Subtract out the effect of that one test, and FluentAssertions
+performs better than classical NUnit asserts but a little bit worse than the
+others.
+
+It is also interesting to see that the Constraint Model of NUnit3 performs very
+well. The most time-consuming assertion there is for the ArgumentNullException.
 
 ## Conclusion
 
-The execution time differences are troubling, but this sample code base is too
-small to read too much into it. Setting that aside, FluentAssertions gets my
-vote. Perhaps I'll find a way to do a more real-world conversion and comparison.
-Without that, I feel that my best choice is to upgrade Should to Shoudly and
-perhaps make time to pitch in on improving the documentation.
+The execution time differences are troubling. This sample code base may too
+small to read too much into it, but this is an important finding and something
+to watch out for. Based on documentation and richness of syntax I would want to
+use Fluent Assertions, but if the project has a large number of tests, the small
+performance difference could add up to a meaningful increase in total execution
+time. If time to fully evaluate is lacking, then I feel that my best choice is
+to upgrade Should to Shoudly and perhaps make time to pitch in on improving the
+documentation.
 
 | Framework | Documentation | Richness | Performance |
 |----------|-------------|---------|--------------------|

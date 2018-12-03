@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateCalculator.cs" />
+    <Compile Include="UsingNUnitAssertThat.cs" />
     <Compile Include="UsingShould.cs" />
     <Compile Include="UsingShoudly.cs" />
     <Compile Include="UsingFluentAssertions.cs" />

@@ -39,7 +39,7 @@ namespace AssertionComparison
             }
             catch (CalculatorException outer)
             {
-                Assert.IsInstanceOf<Exception>(outer);
+                Assert.IsInstanceOf<InvalidOperationException>(outer.InnerException);
             }
         }
 
