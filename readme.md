@@ -169,11 +169,11 @@ up. Here is one place where FluentAssertions is not as attractive. I wrote the
 same tests in each framework and ran them many times. The results below are
 representative of the typical results in repeated executions:
 
-![Overall execution times](images/execution-times-1.png)
+![Overall execution times](images/execution-times-summary.png)
 
 Yikes! What's going on here? Let's drill into the results a bit...
 
-![Detailed execution times](images/execution-times-2.png)
+![Detailed execution times](images/execution-times-fa-detail.png)
 
 There is one test that makes up 73% of execution time. And it is a trivial test:
 
